@@ -67,6 +67,9 @@ class AbstractCacheEntry : public ReplaceableEntry
     // The last access tick for the cache entry.
     Tick m_last_touch_tick;
 
+    // Tick last_miss_service_latency;
+    // Tick allocTick;
+
   public:
     AbstractCacheEntry();
     virtual ~AbstractCacheEntry() = 0;

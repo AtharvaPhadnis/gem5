@@ -414,6 +414,40 @@ Sequencer::recordMissLatency(SequencerRequest* srequest, bool llscSuccess,
              curTick(), m_version, "Seq", llscSuccess ? "Done" : "SC_Failed",
              "", "", printAddress(srequest->pkt->getAddr()), total_lat);
 
+    Addr paddr = srequest->pkt->getAddr();  // PHYSICAL address
+
+    // Determine bucket
+    int bucket = paddr / regionSize;
+    if (bucket >= NUM_BUCKETS)
+        bucket = NUM_BUCKETS - 1;   // clamp or ignore out-of-range
+
+    // Compute latency
+    // Cycles issued_time = srequest->issue_time;
+    // Cycles completion_time = curCycle();
+    // Cycles total_lat = completion_time - issued_time;
+
+    // Avoid incorrect merges
+    if ((initialRequestTime != 0) && (initialRequestTime < issued_time)) {
+        total_lat = Cycles(0);
+    }
+
+    // Update EWMA for this bucket
+    LatencyLookupTable&b = llt[bucket];
+
+    b.last_miss_latency = total_lat;
+
+    if (b.samples == 0) {
+        b.ewma_latency = (double)total_lat;
+    } else {
+        b.ewma_latency =
+            alpha * (double)total_lat +
+            (1.0 - alpha) * b.ewma_latency;
+    }
+    b.samples++;
+
+    DPRINTF(ProtocolTrace, "Bucket %d (addr=%#lx): latency=%lu last_miss_latency=%d ewma=%f\n",
+        bucket, paddr, (uint64_t)total_lat, b.last_miss_latency, b.ewma_latency);
+
     m_latencyHist.sample(total_lat);
     m_typeLatencyHist[type]->sample(total_lat);
 

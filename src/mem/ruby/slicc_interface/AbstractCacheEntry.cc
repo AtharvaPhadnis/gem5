@@ -57,6 +57,8 @@ AbstractCacheEntry::AbstractCacheEntry() : ReplaceableEntry()
     m_last_touch_tick = 0;
     m_htmInReadSet = false;
     m_htmInWriteSet = false;
+    // last_miss_service_latency = 0;
+    // allocTick = MaxTick;
 }
 
 AbstractCacheEntry::~AbstractCacheEntry()

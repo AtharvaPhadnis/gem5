@@ -82,6 +82,21 @@ struct SequencerRequest
     }
 };
 
+static const double alpha = 0.2;  // EWMA weight
+static const Addr regionSize = 1ULL << 20; // 1 MB
+
+static const int NUM_BUCKETS = 8;
+
+struct LatencyLookupTable {
+    double ewma_latency;
+    Cycles last_miss_latency;
+    uint64_t samples;
+    LatencyLookupTable() : ewma_latency(0.0), last_miss_latency(Cycles()), samples(0) {}
+};
+
+static LatencyLookupTable llt[NUM_BUCKETS];
+
+
 class Sequencer : public RubyPort
 {
   public:
