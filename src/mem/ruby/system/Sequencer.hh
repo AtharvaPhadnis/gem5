@@ -82,8 +82,8 @@ struct SequencerRequest
     }
 };
 
-static const double alpha = 0.2;  // EWMA weight
-static const Addr regionSize = 1ULL << 20; // 1 MB
+static const double alpha = 0.2;  // EWMA weight, some chatgpt studd I dont fully inderstand this
+static const Addr regionSize = 1ULL << 20; // Denominator hard coded (for now)
 
 static const int NUM_BUCKETS = 8;
 
@@ -94,6 +94,7 @@ struct LatencyLookupTable {
     LatencyLookupTable() : ewma_latency(0.0), last_miss_latency(Cycles()), samples(0) {}
 };
 
+// Static global variable for now, must be a better way to do this but seems irrelevant for our purpose
 static LatencyLookupTable llt[NUM_BUCKETS];
 
 

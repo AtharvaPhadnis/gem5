@@ -426,7 +426,6 @@ Sequencer::recordMissLatency(SequencerRequest* srequest, bool llscSuccess,
     // Cycles completion_time = curCycle();
     // Cycles total_lat = completion_time - issued_time;
 
-    // Avoid incorrect merges
     if ((initialRequestTime != 0) && (initialRequestTime < issued_time)) {
         total_lat = Cycles(0);
     }
@@ -436,6 +435,7 @@ Sequencer::recordMissLatency(SequencerRequest* srequest, bool llscSuccess,
 
     b.last_miss_latency = total_lat;
 
+    // Chatgpt stuff, we can remove this completely if we dont care about EWMA later
     if (b.samples == 0) {
         b.ewma_latency = (double)total_lat;
     } else {
