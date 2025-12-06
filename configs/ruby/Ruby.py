@@ -229,6 +229,7 @@ def create_system(
     bootmem=None,
     cpus=None,
 ):
+    print("In Ruby.py, create_system()")
     system.ruby = RubySystem()
     ruby = system.ruby
 

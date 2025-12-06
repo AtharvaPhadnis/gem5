@@ -56,6 +56,7 @@ def define_options(parser):
 def create_system(
     options, full_system, system, dma_ports, bootmem, ruby_system, cpus
 ):
+    print("In MESI_Two_Level.py, createSystem()")
     if buildEnv["PROTOCOL"] != "MESI_Two_Level":
         fatal("This script requires the MESI_Two_Level protocol to be built.")
 

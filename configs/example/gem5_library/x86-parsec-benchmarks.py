@@ -130,7 +130,7 @@ cache_hierarchy = MESITwoLevelCacheHierarchy(
     l1i_assoc=8,
     l2_size="256KiB",
     l2_assoc=16,
-    num_l2_banks=2,
+    num_l2_banks=8,
 )
 
 # Memory: Dual Channel DDR4 2400 DRAM device.
@@ -149,7 +149,7 @@ processor = SimpleSwitchableProcessor(
     starting_core_type=CPUTypes.KVM,
     switch_core_type=CPUTypes.TIMING,
     isa=ISA.X86,
-    num_cores=2,
+    num_cores=8,
 )
 
 # Here we setup the board. The X86Board allows for Full-System X86 simulations

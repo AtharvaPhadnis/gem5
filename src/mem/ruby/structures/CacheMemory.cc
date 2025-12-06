@@ -359,6 +359,7 @@ CacheMemory::cacheProbe(Addr address) const
         candidates.push_back(static_cast<ReplaceableEntry*>(
                                                        m_cache[cacheSet][i]));
     }
+    DPRINTF(RubyCache, "in cacheProbe(), about to call getVictim()");
     return m_cache[cacheSet][m_replacementPolicy_ptr->
                         getVictim(candidates)->getWay()]->m_Address;
 }

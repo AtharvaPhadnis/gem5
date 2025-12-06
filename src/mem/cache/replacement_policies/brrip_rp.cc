@@ -33,6 +33,7 @@
 
 #include "base/logging.hh" // For fatal_if
 #include "params/BRRIPRP.hh"
+#include "debug/CacheRepl.hh"
 
 namespace gem5
 {
@@ -96,6 +97,8 @@ BRRIP::getVictim(const ReplacementCandidates& candidates) const
 {
     // There must be at least one replacement candidate
     assert(candidates.size() > 0);
+
+    DPRINTF(CacheRepl, "getVictim() in BRRIP\n");
 
     // Use first candidate as dummy victim
     ReplaceableEntry* victim = candidates[0];

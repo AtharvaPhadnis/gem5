@@ -115,6 +115,15 @@ class BRRIPRP(BaseReplacementPolicy):
     )
 
 
+class LatencyAwareBRRIPRP(BRRIPRP):
+    type = 'LatencyAwareBRRIPRP'
+    cxx_class = 'gem5::replacement_policy::LatencyAwareBRRIP'
+    cxx_header = "mem/cache/replacement_policies/latency_aware_brrip_rp.hh"
+
+    # BREAK THE CYCLE: Pass the integer ID, not the object
+    node_id = Param.Int("The NodeID of the L2 Controller")
+    k_factor = Param.Float(1.0, "Weight factor for latency in eviction score")
+
 class RRIPRP(BRRIPRP):
     btp = 100
 

@@ -32,6 +32,7 @@ from m5.objects import (
     RubyCache,
 )
 
+from m5.objects import LatencyAwareBRRIPRP
 
 class L2Cache(MESI_Two_Level_L2Cache_Controller):
 
@@ -43,19 +44,21 @@ class L2Cache(MESI_Two_Level_L2Cache_Controller):
         return cls._version - 1
 
     def __init__(
-        self, l2_size, l2_assoc, network, num_l2Caches, cache_line_size
+        self, l2_size, l2_assoc, network, num_l2Caches, cache_line_size, node_id
     ):
         super().__init__()
 
         self.version = self.versionCount()
         self._cache_line_size = cache_line_size
         self.connectQueues(network)
+        # self.node_id = node_id
 
         # This is the cache memory object that stores the cache data and tags
         self.L2cache = RubyCache(
             size=l2_size,
             assoc=l2_assoc,
             start_index_bit=self.getIndexBit(num_l2Caches),
+            replacement_policy=LatencyAwareBRRIPRP(node_id=node_id, k_factor=1.0)
         )
 
         self.transitions_per_cycle = 4

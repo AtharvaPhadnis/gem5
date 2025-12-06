@@ -32,6 +32,7 @@ from m5.objects import (
     RubySystem,
 )
 
+
 from ....coherence_protocol import CoherenceProtocol
 from ....utils.override import overrides
 from ....utils.requires import requires
@@ -151,9 +152,19 @@ class MESITwoLevelCacheHierarchy(
                 self.ruby_system.network,
                 self._num_l2_banks,
                 cache_line_size,
+                node_id=i
+                # replacement_policy=LatencyAwareBRRIPRP(
+                #     node_id=i,    # <--- USE node_id=i (Integer)
+                #     k_factor=1.0
+                # )
             )
-            for _ in range(self._num_l2_banks)
+            for i in range(self._num_l2_banks)
         ]
+
+        for l2cn in self._l2_controllers:
+            print(l2cn)
+            # print(l2cn.replacement_policy)
+
         # TODO: Make this prettier: The problem is not being able to proxy
         # the ruby system correctly
         for cache in self._l2_controllers:
